@@ -42,8 +42,8 @@ enable_site (){ #{{{
     if [ -z "$1" ]; then
         echo "Which site would you like to enable?"
         echo -n "Your choices are: "
-        ls $SYSCONFDIR$SITESAVAILABLE/*$EXTSITE 2>/dev/null | \
-        sed -e "s,$SYSCONFDIR$SITESAVAILABLE/,,g" -e "s,$EXTSITE,,g" | xargs echo
+        ls $SYSCONFDIR/$SITESAVAILABLE/*$EXTSITE 2>/dev/null | \
+        sed -e "s,$SYSCONFDIR/$SITESAVAILABLE/,,g" -e "s,$EXTSITE,,g" | xargs echo
         echo -n "Site name? "
         read SITENAME
     else
@@ -73,17 +73,17 @@ enable_site (){ #{{{
         exit 0
     fi
 
-    if ! [ -e "$SYSCONFDIR$SITESAVAILABLE/$SITENAME$EXTSITE" ]; then
+    if ! [ -e "$SYSCONFDIR/$SITESAVAILABLE/$SITENAME$EXTSITE" ]; then
         echo "This site does not exist!" >&2
         exit 1
     fi
 
     if [ "$SITENAME" = "default" ]; then
-        ln -sf $SYSCONFDIR$SITESAVAILABLE/$SITENAME$EXTSITE \
+        ln -sf $SYSCONFDIR/$SITESAVAILABLE/$SITENAME$EXTSITE \
             $SYSCONFDIR/$SITESENABLED/${PRIORITY:+$PRIORITY-}$SITENAME$EXTSITE
         RETVAL=$?
     else
-        ln -sf $SYSCONFDIR$SITESAVAILABLE/$SITENAME$EXTSITE \
+        ln -sf $SYSCONFDIR/$SITESAVAILABLE/$SITENAME$EXTSITE \
             $SYSCONFDIR/$SITESENABLED/$SITENAME$EXTSITE
         RETVAL=$?
     fi
@@ -129,7 +129,7 @@ disable_site (){ #{{{
 
     if ! [ -e "$SYSCONFDIR/$SITESENABLED/$SITENAME$EXTSITE" -o \
         -e "$SYSCONFDIR/$SITESENABLED/$PRIORITY-$SITENAME$EXTSITE" ]; then
-        if [ -e "$SYSCONFDIR$SITESAVAILABLE/$SITENAME$EXTSITE" ]; then
+        if [ -e "$SYSCONFDIR/$SITESAVAILABLE/$SITENAME$EXTSITE" ]; then
             echo "Site $SITENAME is already disabled"
             exit 0
         fi
